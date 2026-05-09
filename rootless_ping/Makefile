@@ -42,7 +42,7 @@ all : $(OBJ) $(NAME)
 $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
 	@chown 1000:1000 $(NAME)
-	@chown 1000:1000 $(OBJDIR)
+	@chown -R 1000:1000 $(OBJDIR)
 #	@setcap cap_net_raw=+ep ft_ping	
 
 $(OBJDIR)/%.o: %.c
