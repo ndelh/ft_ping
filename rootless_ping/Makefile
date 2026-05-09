@@ -12,6 +12,16 @@
 
 NAME := ft_ping 
 
+ROOT_RULES = all re $(NAME)
+
+CURRENT_CMD = $(if $(MAKECMDGOALS), $(MAKECMDGOALS), all)
+
+ifneq ($(filter $(ROOT_RULES), $(CURRENT_CMD)),)
+	ifneq ($(shell id -u), 0)
+       		$(error "file must be compiled with root privileges to set capabilities and allow rootless ft_ping")
+	endif
+endif
+
 SRC := main.c \
        srcs/parse_retrieve_args.c \
        srcs/socket_init.c \
@@ -31,6 +41,9 @@ all : $(OBJ) $(NAME)
 
 $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@chown 1000:1000 $(NAME)
+	@chown 1000:1000 $(OBJDIR)
+#	@setcap cap_net_raw=+ep ft_ping	
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(@D)
