@@ -7,6 +7,7 @@ void	clean_data(t_data *data)
 	free(data->hostname);
 	freeaddrinfo(data->target_intel);
 	free(data);
+	res_nclose(&_res);
 }
 
 void	ft_end(t_data *data, int exit_code)

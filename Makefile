@@ -15,12 +15,13 @@ NAME := ft_ping
 SRC := main.c \
        srcs/parse_retrieve_args.c \
        srcs/ft_init.c \
+       srcs/sig.c \
        srcs/ft_end.c \
        srcs/utils.c \
 
 CC := cc
 
-CFLAGS := -g -Wall -Werror -Wextra
+CFLAGS := -g -Wall -Werror -Wextra 
 
 OBJDIR = obj
 OBJ = $(SRC:.c=.o)

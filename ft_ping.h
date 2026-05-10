@@ -7,7 +7,9 @@
 # include <string.h>
 # include <sys/socket.h>
 # include <sys/types.h>
+# include <signal.h>
 # include <netdb.h>
+# include <resolv.h>
 # include <netinet/ip_icmp.h>
 
 # define FLAG_VLOWER 1
@@ -24,6 +26,7 @@ typedef struct	s_data
 
 //init
 void	retrieve_target_intels(t_data *data);
+void	sig_init(t_data *data);
 void	create_socket(t_data *data);
 
 //parsing

@@ -26,6 +26,11 @@ int	main(int ac, char **argv)
 		return (1);
 	parse_retrieve_args(data, argv + 1);
 	retrieve_target_intels(data);
+	sig_init(data);
 	create_socket(data);
+	alarm(1);
+	while (1)
+	{
+	};
 	ft_end(data, 0);
 }
