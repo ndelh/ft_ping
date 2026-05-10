@@ -25,6 +25,7 @@ int	main(int ac, char **argv)
 	if (!data)
 		return (1);
 	parse_retrieve_args(data, argv + 1);
+	retrieve_target_intels(data);
 	create_socket(data);
 	ft_end(data, 0);
 }

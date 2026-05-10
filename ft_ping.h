@@ -6,6 +6,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/socket.h>
+# include <sys/types.h>
+# include <netdb.h>
 # include <netinet/ip_icmp.h>
 
 # define FLAG_VLOWER 1
@@ -16,10 +18,12 @@ typedef struct	s_data
 	int		raw_sock;
 	unsigned char	flags;
 	char		*hostname;
+	struct addrinfo	*target_intel;
 
 }	t_data;
 
 //init
+void	retrieve_target_intels(t_data *data);
 void	create_socket(t_data *data);
 
 //parsing
