@@ -37,5 +37,6 @@ void	ft_end(t_data *data, int exit_code);
 
 //utils
 void	error_end(t_data *data, char *msg, int exit_code);
+t_data	*access_data(t_data *data);
 
 #endif 

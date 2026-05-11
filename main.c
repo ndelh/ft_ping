@@ -1,5 +1,13 @@
 #include "ft_ping.h"
 
+void	prerequisite_check(void)
+{
+	if (getuid())
+	{
+		write(2, "user must be root\n", 18);
+		exit(0);
+	}
+}
 t_data	*init_data(void)
 {
 	t_data	*data;
@@ -9,6 +17,7 @@ t_data	*init_data(void)
 		memset(data, 0, sizeof(t_data));
 	else
 		perror("malloc failed");
+	access_data(data);
 	return (data);
 }
 
@@ -21,6 +30,7 @@ int	main(int ac, char **argv)
 		write(2, "Error\n", 6);
 		return (0);
 	}
+	prerequisite_check();
 	data = init_data();
 	if (!data)
 		return (1);
