@@ -13,9 +13,11 @@
 NAME := ft_ping 
 
 SRC := main.c \
-       srcs/utils/string_display.c \
-       srcs/init/init.c \
-       srcs/init/socket_init.c \
+       srcs/parse_retrieve_args.c \
+       srcs/ft_init.c \
+       srcs/sig.c \
+       srcs/ft_end.c \
+       srcs/utils.c \
 
 CC := cc
 

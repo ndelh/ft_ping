@@ -27,11 +27,9 @@ typedef struct	s_data
 }	t_data;
 
 //init
-void	init(t_data *data, char **s);
 void	retrieve_target_intels(t_data *data);
 void	sig_init(t_data *data);
-	//socket init
-void	get_addr(t_data *data);
+void	create_socket(t_data *data);
 void	load_header(t_data *data);
 
 //parsing
@@ -41,9 +39,6 @@ void	parse_retrieve_args(t_data *data, char **argv);
 void	ft_end(t_data *data, int exit_code);
 
 //utils
-	//string display
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
 void	error_end(t_data *data, char *msg, int exit_code);
 t_data	*access_data(t_data *data);
 

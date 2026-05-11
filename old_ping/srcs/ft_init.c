@@ -24,6 +24,17 @@ void	retrieve_target_intels(t_data *data)
 	
 }
 
+void	load_header(t_data *data)
+{
+	struct icmphdr	*header;
+
+	header = data->header;
+	header->type = ICMP_ECHO;
+	header->code = 0;
+	header->un.echo.id = data->pid;
+	header->un.echo.sequence = 1;
+}
+
 void	create_socket(t_data *data)
 {
 	data->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
