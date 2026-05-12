@@ -16,6 +16,10 @@ SRC := main.c \
        srcs/utils/string_display.c \
        srcs/init/init.c \
        srcs/init/socket_init.c \
+       srcs/init/epoll_init.c \
+       srcs/init/sig_init.c \
+       srcs/core/core_loop.c \
+       srcs/end/ft_end.c \
 
 CC := cc
 

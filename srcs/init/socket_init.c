@@ -18,7 +18,18 @@ void	get_addr(t_data *data)
 	error = getaddrinfo(data->hostname, NULL, &hints, &data->target_intel);
 	if (error)
 	{
-		dprintf(2, "Ping: Error while retrieving hostname intel%s\n", gai_strerror(error));
+		dprintf(2, "Ping: Error while retrieving hostname intel: %s\n", gai_strerror(error));
+		exit(1);
+	}
+}
+
+void	open_raw_socket(t_data *data)
+{
+	data->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+	if (data->raw_sock == -1)
+	{
+		perror("failed with data raw_sock");
+		free_data(data);
 		exit(1);
 	}
 }

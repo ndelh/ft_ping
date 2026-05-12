@@ -44,10 +44,13 @@ void	retrieve_args_flags(t_data *data, char **s)
 
 void	init(t_data *data, char **argv)
 {
-	t_data	data;
-
-	memset(&data, 0, sizeof(t_data));
+	memset(data, 0, sizeof(t_data));
+	data->raw_sock = -1;
+	data->epoll_fd = -1;
 	pre_check();
-	retrieve_args_flags(&data, argv);
-	get_addr(&data);
+	retrieve_args_flags(data, argv);
+	get_addr(data);
+	open_raw_socket(data);
+	epoll_init(data);
+	sig_init(data);
 }
