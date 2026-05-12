@@ -40,15 +40,26 @@ void	sec_routine(t_data *data)
 
 	nb_read = read(data->timerfd, &expired, sizeof(uint64_t));
 	if (nb_read != sizeof(uint64_t))
-		ft_putendl_fd("Error: bad value received fron timerfd", 2);
+		ft_putendl_fd("Error: bad value received from timerfd", 2);
+	send_ping(data);
 	printf("second has passed\n");
 }
 
+void	receive_pong(t_data *data)
+{
+	ssize_t		n;
+	char		buffer[500];
+	
+	n = 500;
+	read(data->raw_sock, buffer, n);
+	printf("pong_received\n");
+}
 
 void	core_loop(t_data *data)
 {
 	struct epoll_event	surveil[16];
 	struct epoll_event	cursor;
+	//struct timeval	reception_time;
 	int			event_nb;
 	int			i;
 
@@ -63,7 +74,7 @@ void	core_loop(t_data *data)
 			if (cursor.data.fd == data->timerfd)
 				sec_routine(data);
 			else
-				printf("event detected on raw socket\n");
+				receive_pong(data);
 			++i;
 		}
 	}

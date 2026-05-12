@@ -23,6 +23,11 @@ typedef struct	s_data
 	int				raw_sock;
 	int				epoll_fd;
 	int				timerfd;
+	int				nb_send;
+	int				received;
+	uint64_t			us_total_ms;
+	uint64_t			square_total_ms;
+	uint16_t			be_pid;
 	char			*hostname;
 	pid_t			pid;
 	unsigned char	flags;
@@ -46,6 +51,7 @@ void	parse_retrieve_args(t_data *data, char **argv);
 
 //core
 void	core_loop(t_data *data);
+void	send_ping(t_data *data);
 
 //end
 void	free_data(t_data *data);

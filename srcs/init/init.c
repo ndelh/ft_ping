@@ -47,6 +47,7 @@ void	init(t_data *data, char **argv)
 	memset(data, 0, sizeof(t_data));
 	data->raw_sock = -1;
 	data->epoll_fd = -1;
+	data->be_pid = htons(getpid());
 	pre_check();
 	retrieve_args_flags(data, argv);
 	get_addr(data);

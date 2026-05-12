@@ -19,6 +19,7 @@ SRC := main.c \
        srcs/init/epoll_init.c \
        srcs/init/sig_init.c \
        srcs/core/core_loop.c \
+       srcs/core/forge_header.c \
        srcs/end/ft_end.c \
 
 CC := cc
