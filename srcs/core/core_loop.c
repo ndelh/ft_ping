@@ -45,16 +45,6 @@ void	sec_routine(t_data *data)
 	printf("second has passed\n");
 }
 
-void	receive_pong(t_data *data)
-{
-	ssize_t		n;
-	char		buffer[500];
-	
-	n = 500;
-	read(data->raw_sock, buffer, n);
-	printf("pong_received\n");
-}
-
 void	core_loop(t_data *data)
 {
 	struct epoll_event	surveil[16];

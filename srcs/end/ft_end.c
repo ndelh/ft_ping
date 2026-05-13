@@ -12,7 +12,7 @@ void	close_fds(t_data *data)
 
 void	destroy_alloc(t_data *data)
 {
-	freeaddrinfo(data->target_intel);
+	(void)data;
 }
 
 void	free_data(t_data *data)

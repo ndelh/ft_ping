@@ -31,7 +31,7 @@ typedef struct	s_data
 	char			*hostname;
 	pid_t			pid;
 	unsigned char	flags;
-	struct addrinfo	*target_intel;
+	struct sockaddr	target_intel;
 	struct icmphdr	*header;
 
 }	t_data;
@@ -52,7 +52,7 @@ void	parse_retrieve_args(t_data *data, char **argv);
 //core
 void	core_loop(t_data *data);
 void	send_ping(t_data *data);
-
+void	receive_pong(t_data *data);
 //end
 void	free_data(t_data *data);
 

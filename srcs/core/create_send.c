@@ -41,8 +41,6 @@ void	send_ping(t_data *data)
 
 	++data->nb_send;
 	forge_content(data, packet, sizeof(packet));
-	if (sendto(data->raw_sock, (void *)packet, sizeof(packet), 0, data->target_intel->ai_addr, sizeof(struct sockaddr)) == -1)
+	if (sendto(data->raw_sock, (void *)packet, sizeof(packet), 0, &data->target_intel, sizeof(struct sockaddr)) == -1)
 		printf("error");
-	else
-		printf("success");
 }
