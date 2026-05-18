@@ -12,7 +12,7 @@ void	close_fds(t_data *data)
 
 void	destroy_alloc(t_data *data)
 {
-	(void)data;
+	free(data->sequence_tab);
 }
 
 void	free_data(t_data *data)

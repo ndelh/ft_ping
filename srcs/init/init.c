@@ -45,6 +45,12 @@ void	retrieve_args_flags(t_data *data, char **s)
 void	init(t_data *data, char **argv)
 {
 	memset(data, 0, sizeof(t_data));
+	data->sequence_tab = calloc(UINT16_MAX, sizeof(t_tab));
+	if (!data->sequence_tab)
+	{
+		perror("alloc failed");
+		exit(1);
+	}
 	data->raw_sock = -1;
 	data->epoll_fd = -1;
 	data->be_pid = htons(getpid());

@@ -9,6 +9,7 @@
 # include <sys/epoll.h>
 # include <sys/types.h>
 # include <sys/timerfd.h>
+# include <linux/net_tstamp.h>
 # include <sys/time.h>
 # include <signal.h>
 # include <netdb.h>
@@ -18,6 +19,19 @@
 # define FLAG_VLOWER 1
 # define FLAG_QM 2
 # define MIL 1000000
+
+typedef union	u_force_align
+{
+	char	sequence_nb[128];
+	struct cmsghdr align;
+} t_force_align;
+
+typedef struct	s_tab
+{
+	struct	timespec	send_time;
+	int	already_used;
+}	t_tab;
+
 typedef struct	s_data
 {
 	int				raw_sock;
@@ -31,6 +45,7 @@ typedef struct	s_data
 	char			*hostname;
 	pid_t			pid;
 	unsigned char	flags;
+	struct s_tab	*sequence_tab;
 	struct sockaddr	target_intel;
 	struct icmphdr	*header;
 
@@ -49,9 +64,11 @@ void	open_raw_socket(t_data *data);
 //parsing
 void	parse_retrieve_args(t_data *data, char **argv);
 
+
 //core
 void	core_loop(t_data *data);
 void	send_ping(t_data *data);
+void	fetch_in_error_queue(t_data *data);
 void	receive_pong(t_data *data);
 //end
 void	free_data(t_data *data);

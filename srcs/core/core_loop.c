@@ -45,11 +45,15 @@ void	sec_routine(t_data *data)
 	printf("second has passed\n");
 }
 
+void	fetch_error(t_data *data)
+{
+	(void)data;
+}
+
 void	core_loop(t_data *data)
 {
 	struct epoll_event	surveil[16];
 	struct epoll_event	cursor;
-	//struct timeval	reception_time;
 	int			event_nb;
 	int			i;
 
@@ -63,8 +67,11 @@ void	core_loop(t_data *data)
 			cursor = surveil[i];
 			if (cursor.data.fd == data->timerfd)
 				sec_routine(data);
-			else
-				receive_pong(data);
+			else 
+				if (cursor.events & EPOLLERR)
+					fetch_error(data);
+				if (cursor.events & EPOLLIN)
+					receive_pong(data);
 			++i;
 		}
 	}
