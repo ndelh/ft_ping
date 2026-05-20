@@ -21,6 +21,7 @@ SRC := main.c \
        srcs/core/core_loop.c \
        srcs/core/create_send.c \
        srcs/core/receive_pong.c \
+       srcs/core/fetch_in_error_queue.c \
        srcs/end/ft_end.c \
 
 CC := cc

@@ -17,7 +17,7 @@ void	sig_init(t_data *data)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL))
 	{
-		perror("failed to initate signal gestion");
+		perror("failed to initiate signal gestion");
 		free_data(data);
 		exit(0);
 	}	

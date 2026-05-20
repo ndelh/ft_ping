@@ -37,8 +37,10 @@ void	setup_sock_kernel_option(int *flags)
 void	open_raw_socket(t_data *data)
 {
 	int flags;
+	int	recver;
 
 	flags = 0;
+	recver = 1;
 	data->raw_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (data->raw_sock == -1)
 	{
@@ -47,7 +49,8 @@ void	open_raw_socket(t_data *data)
 		exit(1);
 	}
 	setup_sock_kernel_option(&flags);
-	if (setsockopt(data->raw_sock, SOL_SOCKET, SO_TIMESTAMPING, &flags, sizeof(flags)))
+	if (setsockopt(data->raw_sock, SOL_SOCKET, SO_TIMESTAMPING, &flags, sizeof(flags))
+			|| setsockopt(data->raw_sock, SOL_IP, IP_RECVERR, &recver, sizeof(recver)))
 	{
 		perror("failed to set sock params");
 		free_data(data);

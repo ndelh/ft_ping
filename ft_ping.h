@@ -1,35 +1,41 @@
 #ifndef FT_PING_H
 # define FT_PING_H
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/socket.h>
-# include <sys/epoll.h>
-# include <sys/types.h>
-# include <sys/timerfd.h>
-# include <linux/net_tstamp.h>
-# include <sys/time.h>
-# include <signal.h>
-# include <netdb.h>
-# include <resolv.h>
-# include <netinet/ip_icmp.h>
+//include order count miust be posix to net to linux specifics
+#include <sys/types.h>
+#include <sys/socket.h> 
+#include <sys/epoll.h>
+#include <sys/timerfd.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <signal.h>
+#include <netinet/in.h>
+#include <netinet/ip_icmp.h>
+#include <netdb.h>
+#include <resolv.h>
+
+
+#include <linux/net_tstamp.h>
+#include <linux/errqueue.h>
 
 # define FLAG_VLOWER 1
 # define FLAG_QM 2
 # define MIL 1000000
-
+# define QUEUESIZE 10
 typedef union	u_force_align
 {
-	char	sequence_nb[128];
+	char	content[128];
 	struct cmsghdr align;
 } t_force_align;
 
 typedef struct	s_tab
 {
 	struct	timespec	send_time;
-	int	already_used;
+	int					in_use;
 }	t_tab;
 
 typedef struct	s_data
@@ -48,6 +54,10 @@ typedef struct	s_data
 	struct s_tab	*sequence_tab;
 	struct sockaddr	target_intel;
 	struct icmphdr	*header;
+	uint16_t				my_queue[QUEUESIZE];
+	uint16_t				queue_head;
+	uint16_t				queue_tail;
+	uint16_t				queue_size;
 
 }	t_data;
 

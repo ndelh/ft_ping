@@ -6,7 +6,7 @@ unsigned short compute_checksum(unsigned short *computing, int len)
 	unsigned short	result;
 	
 	checksum = 0;
-	while (len > 2)
+	while (len > 1)
 	{
 		checksum += *computing;
 		++computing;
@@ -29,40 +29,35 @@ void	forge_content(t_data *data, char *packet, int len)
 	header = (struct icmphdr *)packet;
 	header->type = ICMP_ECHO;
 	header->un.echo.id = data->be_pid;
-	header->un.echo.sequence = htons(data->nb_send);
+	header->un.echo.sequence = htons((uint16_t)data->nb_send);
+	data->my_queue[data->queue_tail] = (uint16_t)data->nb_send;
+	data->queue_tail = (data->queue_tail + 1) % QUEUESIZE;
+	++data->queue_size;
 	payload = packet + sizeof(struct icmphdr);
 	memcpy(payload, "ndelhota ping\n", 14);
 	header->checksum = compute_checksum((unsigned short *)packet ,len);
 }
 
-void	setup_struct(t_data *data, struct msghdr *msg, struct iovec *iov, char *control)
+void	setup_struct(t_data *data, struct msghdr *msg, struct iovec *iov)
 {
-	struct cmsghdr	*cmsg;
 
 	msg->msg_name = (struct sockaddr_in *)(&data->target_intel);
 	msg->msg_namelen = sizeof(struct sockaddr_in);
 	msg->msg_iov = iov;
 	msg->msg_iovlen = 1;
-	msg->msg_control = control;
-	msg->msg_controllen = CMSG_SPACE(sizeof(uint32_t));
-	cmsg = CMSG_FIRSTHDR(msg);
-	cmsg->cmsg_level = SOL_SOCKET;
-	cmsg->cmsg_type = SCM_TIMESTAMPING;
-	cmsg->cmsg_len = CMSG_LEN(sizeof(uint32_t));
-	*(uint32_t *)CMSG_DATA(cmsg) = ((uint32_t)data->nb_send % UINT16_MAX) + 1; 
+	msg->msg_control = NULL;
+	msg->msg_controllen = 0;
 }
 
 void	special_send(t_data *data, char *packet, int packet_size)
 {
 	struct	msghdr msg;
 	struct iovec	iov[1];
-	t_force_align	control;
 
 	memset(&msg, 0, sizeof(struct msghdr));
-	memset(&control, 0, sizeof(t_force_align));
 	iov[0].iov_base = packet;
 	iov[0].iov_len = packet_size;
-	setup_struct(data, &msg, iov, control.sequence_nb);
+	setup_struct(data, &msg, iov);
 	if (sendmsg(data->raw_sock, &msg, 0) == -1)
 	{
 		perror("send_error");
@@ -77,5 +72,11 @@ void	send_ping(t_data *data)
 
 	++data->nb_send;
 	forge_content(data, packet, sizeof(packet));
+	if (data->queue_size > QUEUESIZE)
+	{
+		ft_putendl_fd("systems block on send, queue size too big", 2);
+		free_data(data);
+		exit(1);
+	}
 	special_send(data, packet, sizeof(packet));
 }
