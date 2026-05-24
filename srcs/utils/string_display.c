@@ -21,3 +21,27 @@ void	ft_putendl_fd(char *s, int fd)
 	ft_putstr_fd(s, fd);
 	write(fd, "\n", 1);
 }
+
+void	print_end_intels(t_data *data)
+{
+	float	percent;
+	int		lost;
+	uint64_t	ms_duration;
+
+	ms_duration = (data->last_reply.tv_sec - data->launch_time.tv_sec) * 1000 + (data->last_reply.tv_usec - data->launch_time.tv_usec) / 1000;
+	printf("\n--- %s ping statistics ---\n", data->hostname);
+	if (data->nb_send)
+	{
+		printf("%i packets transmitted, %i received, ", data->nb_send, data->received);
+		lost = data->nb_send - data->received;
+		percent = (float)lost * (float)100 / (float)data->nb_send;
+	}
+	if (data->error_nb)
+		printf("+%i errors, ", data->error_nb);
+	printf("%g%% packet loss, time %lums\n", percent, ms_duration);
+}
+
+void	print_begin(t_data *data)
+{
+	printf("PING %s (%s) %i(%i) bytes of data.\n", data->hostname, data->printable_ip, PAYLOAD_SIZE, PAYLOAD_SIZE + (int)(sizeof(struct icmphdr) + sizeof(struct iphdr)));
+}

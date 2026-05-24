@@ -2,9 +2,12 @@
 
 void	sigint_handler(int sig)
 {
+	struct timeval	end_time;
+	
 	(void)sig;
+	gettimeofday(&end_time, 0);
 	free_data(access_data(NULL));
-	printf("terminated\n");
+	print_end_intels(access_data(NULL));
 	exit(0);
 }
 

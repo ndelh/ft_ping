@@ -40,9 +40,12 @@ void	sec_routine(t_data *data)
 
 	nb_read = read(data->timerfd, &expired, sizeof(uint64_t));
 	if (nb_read != sizeof(uint64_t))
+	{
 		ft_putendl_fd("Error: bad value received from timerfd", 2);
+		free_data(data);
+		exit(1);
+	}
 	send_ping(data);
-	printf("second has passed\n");
 }
 
 void	core_loop(t_data *data)
@@ -53,6 +56,9 @@ void	core_loop(t_data *data)
 	int			i;
 
 	set_timer_fd(data);
+	print_begin(data);
+	gettimeofday(&data->launch_time, 0);
+	send_ping(data);
 	while (1)
 	{
 		i = 0;

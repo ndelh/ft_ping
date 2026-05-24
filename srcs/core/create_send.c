@@ -68,7 +68,7 @@ void	special_send(t_data *data, char *packet, int packet_size)
 
 void	send_ping(t_data *data)
 {
-	char	packet[sizeof(struct icmphdr) + 56];
+	char	packet[sizeof(struct icmphdr) + PAYLOAD_SIZE];
 
 	++data->nb_send;
 	forge_content(data, packet, sizeof(packet));
