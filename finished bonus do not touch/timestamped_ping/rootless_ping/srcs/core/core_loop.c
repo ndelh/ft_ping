@@ -1,5 +1,15 @@
 #include "../../ft_ping.h"
 
+void	add_timer_fd(t_data *data)
+{
+	struct epoll_event	ev;
+
+	memset(&ev, 0, sizeof(struct epoll_event));
+	ev.events = EPOLLIN;
+	ev.data.fd = data->timerfd;
+	epoll_ctl(data->epoll_fd, EPOLL_CTL_ADD, data->timerfd, &ev);
+}
+
 void	set_timer_fd(t_data *data)
 {
 	struct itimerspec	a;
@@ -20,6 +30,7 @@ void	set_timer_fd(t_data *data)
 		perror("failed to set timer fd");
 		exit(1);
 	}
+	add_timer_fd(data);
 }
 
 void	sec_routine(t_data *data)
@@ -37,39 +48,34 @@ void	sec_routine(t_data *data)
 	send_ping(data);
 }
 
-void	init_poll(t_data *data, struct pollfd *fds)
-{
-	fds->fd = data->timerfd;
-	fds->events = POLLIN;
-	fds->revents = 0;
-	++fds;
-	fds->fd = data->raw_sock;
-	fds->events = POLLIN;
-	fds->revents = 0;
-}
-
 void	core_loop(t_data *data)
 {
-	struct pollfd fds[2];
+	struct epoll_event	surveil[16];
+	struct epoll_event	cursor;
 	int			event_nb;
+	int			i;
 
 	set_timer_fd(data);
-	init_poll(data, fds);
 	print_begin(data);
 	gettimeofday(&data->launch_time, 0);
 	send_ping(data);
-	while (data->end == 0)
+	while (1)
 	{
-		event_nb = poll(fds, 2, -1);
-		if (event_nb < 0 && errno != EINTR)
+		i = 0;
+		event_nb = epoll_wait(data->epoll_fd, surveil, 16, -1);
+		while (i < event_nb)
 		{
-			printf("problem detected\n");
-			free_data(data);
-			exit(1);
+			cursor = surveil[i];
+			if (cursor.data.fd == data->timerfd)
+				sec_routine(data);
+			else
+			{ 
+				if (cursor.events & EPOLLERR)
+					fetch_in_error_queue(data);
+				if (cursor.events & EPOLLIN)
+					receive_pong(data);
+			}
+			++i;
 		}
-		if (fds[0].revents & POLLIN && errno != EINTR)
-			sec_routine(data);
-		if (fds[1].revents & POLLIN)
-			receive_pong(data);
 	}
 }

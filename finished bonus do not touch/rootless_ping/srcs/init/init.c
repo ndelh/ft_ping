@@ -12,13 +12,20 @@ void	pre_check(void)
 void	init(t_data *data, char **argv, int ac)
 {
 	memset(data, 0, sizeof(t_data));
+	data->sequence_tab = calloc(UINT16_MAX + 1, sizeof(t_tab));
+	if (!data->sequence_tab)
+	{
+		perror("alloc failed");
+		exit(1);
+	}
 	data->raw_sock = -1;
 	data->epoll_fd = -1;
 	data->be_pid = htons(getpid());
-	pre_check();
+	//pre_check();
 	retrieve_args(data, argv, ac);
 	open_raw_socket(data);
 	get_addr(data);
+	epoll_init(data);
 	sig_init(data);
 	data->min_time = UINT64_MAX;
 }

@@ -20,25 +20,12 @@ void	treat_question(t_data *data, char **argv)
 	exit(0);
 }
 
-
-void	treat_t(t_data *data, char *opt, char **argv)
-{
-	printf("washere\n");
-	data->current_ttl = ft_atoi(opt);
-	if (data->current_ttl == 0)
-	{
-		printf("%s : invalid argument: '%s': out of range: 0 <= value <= 255\n", *argv, opt);
-		free_data(data);
-		exit(0);
-	}
-}
-
 void	retrieve_args(t_data *data, char **argv, int ac)
 {
 	int	opt;
 
 	opterr = 0;
-	while ((opt = getopt(ac, argv, "?vft:")) != -1)
+	while ((opt = getopt(ac, argv, "?vf")) != -1)
 	{
 		if (opt == 'v')
 			data->flags |= FLAG_VLOWER;
@@ -46,8 +33,6 @@ void	retrieve_args(t_data *data, char **argv, int ac)
 			treat_question(data, argv);
 		else if (opt == 'f')
 			data->flags |= FLAG_F;
-		else if (opt == 't')
-			treat_t(data, optarg, argv);
 	}
 	retrieve_target(data, argv + 1);
 }

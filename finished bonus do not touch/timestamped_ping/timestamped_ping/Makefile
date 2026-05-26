@@ -16,11 +16,12 @@ SRC := main.c \
        srcs/utils/string_display.c \
        srcs/init/init.c \
        srcs/init/socket_init.c \
+       srcs/init/epoll_init.c \
        srcs/init/retrieve_args.c \
-       srcs/init/retrieve_args_utils.c \
        srcs/init/sig_init.c \
        srcs/core/core_loop.c \
        srcs/core/create_send.c \
+       srcs/core/fetch_in_error_queue.c \
        srcs/core/receive_pong.c \
        srcs/core/parse_received.c \
        srcs/end/ft_end.c \

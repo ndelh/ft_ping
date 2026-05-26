@@ -2,10 +2,13 @@
 
 void	sigint_handler(int sig)
 {
-	t_data	*data;
+	struct timeval	end_time;
 	
-	data = access_data(NULL);
-	data->end = sig;
+	(void)sig;
+	gettimeofday(&end_time, 0);
+	free_data(access_data(NULL));
+	print_end_intels(access_data(NULL));
+	exit(0);
 }
 
 void	sig_init(t_data *data)

@@ -6,7 +6,6 @@
 # include <sys/socket.h> 
 # include <sys/epoll.h>
 # include <sys/timerfd.h>
-# include <poll.h>
 # include <sys/time.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -28,10 +27,20 @@
 # define QUEUESIZE 10
 # define PAYLOAD_SIZE 56
 
+typedef union	u_force_align
+{
+	char	content[128];
+	struct cmsghdr align;
+} t_force_align;
+
+typedef struct	s_tab
+{
+	struct	timespec	send_time;
+	int					in_use;
+}	t_tab;
 
 typedef struct	s_data
 {
-	int				end;
 	int				raw_sock;
 	int				epoll_fd;
 	int				timerfd;
@@ -46,12 +55,17 @@ typedef struct	s_data
 	char			*hostname;
 	pid_t			pid;
 	unsigned char	flags;
+	struct s_tab	*sequence_tab;
 	struct sockaddr	target_intel;
 	struct icmphdr	*header;
 	struct timeval	launch_time;
 	struct timeval	last_reply;
 	char					true_name[NI_MAXHOST];
 	char					printable_ip[INET_ADDRSTRLEN];
+	uint16_t				my_queue[QUEUESIZE];
+	uint16_t				queue_head;
+	uint16_t				queue_tail;
+	uint16_t				queue_size;
 	uint8_t					current_ihl;
 	uint8_t					current_ttl;
 	uint16_t				current_seq;
@@ -91,6 +105,5 @@ void	print_end_intels(t_data *data);
 void	print_begin(t_data *data);
 	//getter
 t_data	*access_data(t_data *data);
-int		ft_atoi(char *s);
 
 #endif 

@@ -13,12 +13,9 @@ int	main(int ac, char **argv)
 {
 	t_data	data;
 
-	setvbuf(stdout, NULL, _IONBF, 0);
 	if (ac < 2)
 		ft_putendl_fd("Ping: usage error: destination address required", 2);
 	init(&data, argv, ac);
 	access_data(&data);
 	core_loop(&data);
-	print_end_intels(&data);
-	free_data(&data);
 }
