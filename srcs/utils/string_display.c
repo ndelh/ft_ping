@@ -39,6 +39,7 @@ void	print_end_intels(t_data *data)
 	if (data->error_nb)
 		printf("+%i errors, ", data->error_nb);
 	printf("%g%% packet loss, time %lums\n", percent, ms_duration);
+	print_rtt(data);
 }
 
 void	print_begin(t_data *data)

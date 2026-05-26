@@ -14,6 +14,7 @@ NAME := ft_ping
 
 SRC := main.c \
        srcs/utils/string_display.c \
+       srcs/utils/string_display_2.c \
        srcs/init/init.c \
        srcs/init/socket_init.c \
        srcs/init/retrieve_args.c \
@@ -37,7 +38,7 @@ OBJ := $(addprefix $(OBJDIR)/, $(OBJ))
 all : $(OBJ) $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lm
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(@D)

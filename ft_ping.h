@@ -9,6 +9,7 @@
 # include <poll.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -23,7 +24,7 @@
 # include <linux/errqueue.h>
 
 # define FLAG_VLOWER 1
-# define FLAG_F 2
+# define FLAG_Q 2
 # define BIL 1000000000
 # define QUEUESIZE 10
 # define PAYLOAD_SIZE 56
@@ -89,6 +90,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	error_end(t_data *data, char *msg, int exit_code);
 void	print_end_intels(t_data *data);
 void	print_begin(t_data *data);
+void	print_rtt(t_data *data);
 	//getter
 t_data	*access_data(t_data *data);
 int		ft_atoi(char *s);

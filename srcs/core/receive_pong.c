@@ -8,6 +8,12 @@ uint64_t	treat_time(t_data *data, char *msg)
 		ts = (struct timeval *)msg;
 		to_ret = 0;
 		to_ret = (data->last_reply.tv_sec - ts->tv_sec) * 1000000 + (data->last_reply.tv_usec - ts->tv_usec);
+		if (data->min_time > to_ret)
+			data->min_time = to_ret;
+		if (data->max_time < to_ret)
+			data->max_time = to_ret;
+		data->total_ms += to_ret;
+		data->square_total_ms += to_ret * to_ret;
 		return (to_ret);
 }
 
@@ -22,8 +28,10 @@ void	treat_msg(t_data *data, char *msg, ssize_t nb_read)
 			return ;
 		}
 		computed_time = treat_time(data, msg + sizeof( struct icmphdr) + data->current_ihl);
-		printf("%lu bytes from %s (%s): icmp_seq=%i ttl=%i time=%ld,%ldms\n", nb_read, data->true_name, data->printable_ip, data->current_seq, data->current_ttl, computed_time / 1000, computed_time % 1000);
 		++data->received;
+		if (data->flags & FLAG_Q)
+			return ;
+		printf("%lu bytes from %s (%s): icmp_seq=%i ttl=%i time=%.3fms\n", nb_read, data->true_name, data->printable_ip, data->current_seq, data->current_ttl, (double)computed_time / 1000.0);
 }
 
 void	receive_pong(t_data *data)

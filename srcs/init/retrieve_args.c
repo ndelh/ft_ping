@@ -38,14 +38,14 @@ void	retrieve_args(t_data *data, char **argv, int ac)
 	int	opt;
 
 	opterr = 0;
-	while ((opt = getopt(ac, argv, "?vft:")) != -1)
+	while ((opt = getopt(ac, argv, "q?vft:")) != -1)
 	{
 		if (opt == 'v')
 			data->flags |= FLAG_VLOWER;
 		else if (opt == '?')
 			treat_question(data, argv);
-		else if (opt == 'f')
-			data->flags |= FLAG_F;
+		else if (opt == 'q')
+			data->flags |= FLAG_Q;
 		else if (opt == 't')
 			treat_t(data, optarg, argv);
 	}
