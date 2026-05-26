@@ -15,8 +15,9 @@ int	main(int ac, char **argv)
 
 	if (ac < 2)
 		ft_putendl_fd("Ping: usage error: destination address required", 2);
-	init(&data, argv + 1);
+	init(&data, argv, ac);
 	access_data(&data);
+	if (data.flags & FLAG_F)
+		core_loop_f(&data);
 	core_loop(&data);
-	free_data(&data);
 }

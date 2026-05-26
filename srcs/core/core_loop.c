@@ -79,3 +79,32 @@ void	core_loop(t_data *data)
 		}
 	}
 }
+
+void	core_loop_f(t_data *data)
+{
+	struct epoll_event	surveil[16];
+	struct epoll_event	cursor;
+	int			event_nb;
+	int			i;
+
+	print_begin(data);
+	gettimeofday(&data->launch_time, 0);
+	send_ping(data);
+	usleep(10000);
+	while (1)
+	{
+		i = 0;
+		event_nb = epoll_wait(data->epoll_fd, surveil, 16, 10);
+		if (!event_nb)
+			send_ping(data);
+		while (i < event_nb)
+		{
+			cursor = surveil[i];
+			if (cursor.events & EPOLLERR)
+				fetch_in_error_queue(data);
+			if (cursor.events & EPOLLIN)
+				receive_pong(data);
+			++i;
+		}
+	}
+}

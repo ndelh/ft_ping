@@ -22,7 +22,7 @@
 # include <linux/errqueue.h>
 
 # define FLAG_VLOWER 1
-# define FLAG_QM 2
+# define FLAG_F 2
 # define BIL 1000000000
 # define QUEUESIZE 10
 # define PAYLOAD_SIZE 56
@@ -72,10 +72,11 @@ typedef struct	s_data
 }	t_data;
 
 //init
-void	init(t_data *data, char **s);
+void	init(t_data *data, char **s, int ac);
 void	retrieve_target_intels(t_data *data);
 void	sig_init(t_data *data);
 void	epoll_init(t_data *data);
+void	retrieve_args(t_data *data, char **argv, int ac);
 	//socket init
 void	get_addr(t_data *data);
 void	open_raw_socket(t_data *data);
@@ -91,6 +92,8 @@ void	fetch_in_error_queue(t_data *data);
 void	receive_pong(t_data *data);
 int		parse_received(t_data *data, char *s, ssize_t nb_read);
 unsigned short compute_checksum(unsigned short *computing, int len);
+//special loop
+void	core_loop_f(t_data *data);
 //end
 void	free_data(t_data *data);
 

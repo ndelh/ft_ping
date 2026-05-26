@@ -26,6 +26,8 @@ void	get_addr(t_data *data)
 	struct addrinfo	hints;
 	int		error;
 	
+	if (data->flags & FLAG_VLOWER)
+		printf("ping: sock.4fd: %i (socktype: SOCK_RAW), hints.ai_family: AF_INET\n\n",data->raw_sock);
 	setup_hints(&hints);
 	error = getaddrinfo(data->hostname, NULL, &hints, &res);
 	if (error)
@@ -36,6 +38,8 @@ void	get_addr(t_data *data)
 	}
 	memcpy(&data->target_intel, res->ai_addr, sizeof(struct sockaddr));
 	get_name(data);
+	if (data->flags & FLAG_VLOWER)
+		printf("ai->ai_family: AF_INET, ai->ai_canonname: '%s'\n", res->ai_canonname);
 	freeaddrinfo(res);
 }
 

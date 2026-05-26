@@ -79,4 +79,6 @@ void	send_ping(t_data *data)
 		exit(1);
 	}
 	special_send(data, packet, sizeof(packet));
+	if (data->flags & FLAG_F)
+		write(1, ".", 1);
 }

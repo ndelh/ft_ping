@@ -63,6 +63,12 @@ void	treat_msg(t_data *data, struct msghdr *msg, ssize_t nb_read)
 		if (parse_received(data, msg->msg_iov->iov_base, nb_read))
 			return;
 		computed_time = retrieve_time(data, msg);
+		if (data->flags & FLAG_F)
+		{
+			write(1, "\b", 1);
+			send_ping(data);
+			return ;
+		}
 		nb_read -= (data->current_ihl);
 		printf("%lu bytes from %s (%s): icmp_seq=%i ttl=%i time=%ld,%ldms\n", nb_read, data->true_name, data->printable_ip, data->current_seq, data->current_ttl, computed_time / 1000, computed_time % 1000);
 }

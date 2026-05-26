@@ -9,40 +9,7 @@ void	pre_check(void)
 	}	
 }
 
-void	error_flags(char *s)
-{ 
-	ft_putstr_fd("ping: Error: unsupported flags: -", 2);
-	write(2, s, 1);
-	write(2, "\n", 1);
-}
-
-void	parse_flags(t_data *data, char *s)
-{
-	while (*s)
-	{
-		if (*s == '?')
-			data->flags |= FLAG_QM;
-		else if (*s == 'v')
-			data->flags |= FLAG_VLOWER;
-		else
-			error_flags(s);
-		++s;
-	}
-}
-
-void	retrieve_args_flags(t_data *data, char **s)
-{
-	while (*s)
-	{
-		if (**s == '-')
-		       parse_flags(data, *s + 1);
-		else
-			data->hostname = *s;
-		++s;
-	}
-}
-
-void	init(t_data *data, char **argv)
+void	init(t_data *data, char **argv, int ac)
 {
 	memset(data, 0, sizeof(t_data));
 	data->sequence_tab = calloc(UINT16_MAX + 1, sizeof(t_tab));
@@ -55,9 +22,9 @@ void	init(t_data *data, char **argv)
 	data->epoll_fd = -1;
 	data->be_pid = htons(getpid());
 	pre_check();
-	retrieve_args_flags(data, argv);
-	get_addr(data);
+	retrieve_args(data, argv, ac);
 	open_raw_socket(data);
+	get_addr(data);
 	epoll_init(data);
 	sig_init(data);
 	data->min_time = UINT64_MAX;
