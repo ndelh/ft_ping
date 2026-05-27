@@ -18,6 +18,7 @@
 # include <sys/socket.h> 
 # include <sys/epoll.h>
 # include <sys/timerfd.h>
+# include <sys/capability.h>
 # include <poll.h>
 # include <sys/time.h>
 # include <unistd.h>

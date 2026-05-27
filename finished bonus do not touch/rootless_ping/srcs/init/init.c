@@ -14,11 +14,26 @@
 
 void	pre_check(void)
 {
-	if (getuid() != 0)
+	cap_t				caps;
+	cap_flag_value_t	flags;
+	
+	caps = cap_get_proc();
+	if (!caps)
 	{
-		ft_putendl_fd("ft_ping: too few right,"
-			"this program must be run as root", 2);
+		perror("failed to retrieve capabilities");
 		exit(1);
+	}
+	if (cap_get_flag(caps, CAP_NET_RAW, CAP_EFFECTIVE, &flags) == -1)
+	{
+		perror("failed cap_get_flags");
+		cap_free(caps);
+		exit(1);
+	}
+	cap_free(caps);
+	if (flags != CAP_SET)
+	{
+			ft_putendl_fd("unsufficient capabilities to run ft_ping", 2);
+			exit(1);
 	}
 }
 

@@ -23,14 +23,15 @@ ifneq ($(filter $(ROOT_RULES), $(CURRENT_CMD)),)
 endif
 
 SRC := main.c \
-	srcs/utils/string_display.c \
+       srcs/utils/string_display.c \
+       srcs/utils/string_display_2.c \
        srcs/init/init.c \
        srcs/init/socket_init.c \
        srcs/init/retrieve_args.c \
+       srcs/init/retrieve_args_utils.c \
        srcs/init/sig_init.c \
        srcs/core/core_loop.c \
        srcs/core/create_send.c \
-       srcs/core/fetch_in_error_queue.c \
        srcs/core/receive_pong.c \
        srcs/core/parse_received.c \
        srcs/end/ft_end.c \
@@ -47,7 +48,7 @@ OBJ := $(addprefix $(OBJDIR)/, $(OBJ))
 all : $(OBJ) $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME) -lm -lcap
 	@chown 1000:1000 $(NAME)
 	@chown -R 1000:1000 $(OBJDIR)
 	@setcap cap_net_raw=+ep ft_ping	
