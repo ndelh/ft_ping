@@ -23,10 +23,9 @@ ifneq ($(filter $(ROOT_RULES), $(CURRENT_CMD)),)
 endif
 
 SRC := main.c \
-		srcs/utils/string_display.c \
+	srcs/utils/string_display.c \
        srcs/init/init.c \
        srcs/init/socket_init.c \
-       srcs/init/epoll_init.c \
        srcs/init/retrieve_args.c \
        srcs/init/sig_init.c \
        srcs/core/core_loop.c \

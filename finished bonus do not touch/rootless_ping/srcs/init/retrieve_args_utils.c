@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_init.c                                         :+:      :+:    :+:   */
+/*   retrieve_args_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndelhota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/27 11:20:00 by ndelhota          #+#    #+#             */
-/*   Updated: 2026/05/27 11:20:16 by ndelhota         ###   ########.fr       */
+/*   Created: 2026/05/27 11:19:18 by ndelhota          #+#    #+#             */
+/*   Updated: 2026/05/27 11:19:40 by ndelhota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../ft_ping.h"
 
-void	sigint_handler(int sig)
+int	ft_atoi(char *s)
 {
-	t_data	*data;
+	int	nb;
 
-	data = access_data(NULL);
-	data->end = sig;
-}
-
-void	sig_init(t_data *data)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = &sigint_handler;
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL))
+	nb = 0;
+	while (*s && (*s <= '9' && *s >= '0'))
 	{
-		perror("failed to initiate signal gestion");
-		free_data(data);
-		exit(0);
+		nb = nb * 10 + *s - '0';
+		if (nb > 255)
+		{
+			nb = 0;
+			break ;
+		}
+		++s;
 	}
+	if (*s)
+		nb = 0;
+	return (nb);
 }
