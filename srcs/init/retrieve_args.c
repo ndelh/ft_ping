@@ -22,19 +22,33 @@ void	retrieve_target(t_data *data, char **argv)
 	}
 }
 
+void	print_ping_opt(t_data *data)
+{
+	write(1, "\n", 1);
+	ft_putendl_fd("Usage", 1);
+	ft_putendl_fd("  ping [options] <destination>", 1);
+	write(1, "\n", 1);
+	ft_putendl_fd("Options:", 1);
+	printf("  %-20s%s\n", "<destination>", "DNS name or IP adress");
+	printf("  %-20s%s\n", "-q", "quiet output");
+	printf("  %-20s%s\n", "-t <ttl>", "define time to live");
+	printf("  %-20s%s\n", "-v", "verbose output");
+	free_data(data);
+	exit(0);
+}
+
 void	treat_question(t_data *data, char **argv)
 {
 	if (!optopt)
-		printf("ping helpers\n");
+		print_ping_opt(data);
 	else
-		printf("%s : unrecognized argument :%c\n", *argv, optopt);
+		printf("%s : unrecognized argument: '%c'\n", *argv, optopt);
 	free_data(data);
 	exit(0);
 }
 
 void	treat_t(t_data *data, char *opt, char **argv)
 {
-	printf("washere\n");
 	data->current_ttl = ft_atoi(opt);
 	if (data->current_ttl == 0)
 	{
