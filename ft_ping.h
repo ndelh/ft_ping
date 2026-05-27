@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ping.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndelhota <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/27 10:28:23 by ndelhota          #+#    #+#             */
+/*   Updated: 2026/05/27 10:31:43 by ndelhota         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_PING_H
 # define FT_PING_H
 
@@ -29,8 +41,7 @@
 # define QUEUESIZE 10
 # define PAYLOAD_SIZE 56
 
-
-typedef struct	s_data
+typedef struct s_data
 {
 	int				end;
 	int				raw_sock;
@@ -39,11 +50,11 @@ typedef struct	s_data
 	int				nb_send;
 	int				received;
 	int				error_nb;
-	uint64_t			total_ms;
-	uint64_t			square_total_ms;
-	uint64_t			max_time;
-	uint64_t			min_time;
-	uint16_t			be_pid;
+	uint64_t		total_ms;
+	uint64_t		square_total_ms;
+	uint64_t		max_time;
+	uint64_t		min_time;
+	uint16_t		be_pid;
 	char			*hostname;
 	pid_t			pid;
 	unsigned char	flags;
@@ -51,48 +62,48 @@ typedef struct	s_data
 	struct icmphdr	*header;
 	struct timeval	launch_time;
 	struct timeval	last_reply;
-	char					true_name[NI_MAXHOST];
-	char					printable_ip[INET_ADDRSTRLEN];
-	uint8_t					current_ihl;
-	uint8_t					current_ttl;
-	uint16_t				current_seq;
+	char			true_name[NI_MAXHOST];
+	char			printable_ip[INET_ADDRSTRLEN];
+	uint8_t			current_ihl;
+	uint8_t			current_ttl;
+	uint16_t		current_seq;
 }	t_data;
 
 //init
-void	init(t_data *data, char **s, int ac);
-void	retrieve_target_intels(t_data *data);
-void	sig_init(t_data *data);
-void	epoll_init(t_data *data);
-void	retrieve_args(t_data *data, char **argv, int ac);
+void			init(t_data *data, char **s, int ac);
+void			retrieve_target_intels(t_data *data);
+void			sig_init(t_data *data);
+void			epoll_init(t_data *data);
+void			retrieve_args(t_data *data, char **argv, int ac);
 	//socket init
-void	get_addr(t_data *data);
-void	open_raw_socket(t_data *data);
+void			get_addr(t_data *data);
+void			open_raw_socket(t_data *data);
 
 //parsing
-void	parse_retrieve_args(t_data *data, char **argv);
-
+void			parse_retrieve_args(t_data *data, char **argv);
 
 //core
-void	core_loop(t_data *data);
-void	send_ping(t_data *data);
-void	fetch_in_error_queue(t_data *data);
-void	receive_pong(t_data *data);
-int		parse_received(t_data *data, char *s, ssize_t nb_read);
-unsigned short compute_checksum(unsigned short *computing, int len);
+void			core_loop(t_data *data);
+void			send_ping(t_data *data);
+void			fetch_in_error_queue(t_data *data);
+void			receive_pong(t_data *data);
+int				parse_received(t_data *data, char *s, ssize_t nb_read);
+unsigned short	compute_checksum(unsigned short *computing, int len);
 
 //end
-void	free_data(t_data *data);
+void			free_data(t_data *data);
 
 //utils
 	//string display
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	error_end(t_data *data, char *msg, int exit_code);
-void	print_end_intels(t_data *data);
-void	print_begin(t_data *data);
-void	print_rtt(t_data *data);
+void			ft_putstr_fd(char *s, int fd);
+void			ft_putendl_fd(char *s, int fd);
+void			error_end(t_data *data, char *msg, int exit_code);
+void			print_end_intels(t_data *data);
+void			print_begin(t_data *data);
+void			print_rtt(t_data *data);
 	//getter
-t_data	*access_data(t_data *data);
-int		ft_atoi(char *s);
+t_data			*access_data(t_data *data);
+	//arg_utils
+int				ft_atoi(char *s);
 
 #endif 

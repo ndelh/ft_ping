@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   core_loop.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndelhota <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/27 10:55:25 by ndelhota          #+#    #+#             */
+/*   Updated: 2026/05/27 11:00:47 by ndelhota         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../ft_ping.h"
 
 void	set_timer_fd(t_data *data)
@@ -50,8 +62,8 @@ void	init_poll(t_data *data, struct pollfd *fds)
 
 void	core_loop(t_data *data)
 {
-	struct pollfd fds[2];
-	int			event_nb;
+	struct pollfd	fds[2];
+	int				event_nb;
 
 	set_timer_fd(data);
 	init_poll(data, fds);
