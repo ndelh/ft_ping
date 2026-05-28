@@ -64,7 +64,7 @@ void	retrieve_args(t_data *data, char **argv, int ac)
 	int	opt;
 
 	opterr = 0;
-	opt = getopt(ac, argv, "q?vft:");
+	opt = getopt(ac, argv, "Dq?vft:");
 	while (opt != -1)
 	{
 		if (opt == 'v')
@@ -75,6 +75,8 @@ void	retrieve_args(t_data *data, char **argv, int ac)
 			data->flags |= FLAG_Q;
 		else if (opt == 't')
 			treat_t(data, optarg, argv);
+		else if (opt == 'D')
+			data->flags = FLAG_D;
 		opt = getopt(ac, argv, "q?vft:");
 	}
 	retrieve_target(data, argv + 1);

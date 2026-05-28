@@ -37,6 +37,7 @@
 
 # define FLAG_VLOWER 1
 # define FLAG_Q 2
+# define FLAG_D 4
 # define BIL 1000000000
 # define QUEUESIZE 10
 # define PAYLOAD_SIZE 56

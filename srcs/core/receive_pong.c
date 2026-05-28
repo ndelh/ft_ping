@@ -45,6 +45,9 @@ void	treat_msg(t_data *data, char *msg, ssize_t nb_read)
 	++data->received;
 	if (data->flags & FLAG_Q)
 		return ;
+	if (data->flags & FLAG_D)
+		printf("[%lu.%lu] ", data->last_act.tv_sec,
+			data->last_act.tv_usec);
 	printf("%lu bytes from %s (%s): icmp_seq=%i ttl=%i time=%.3fms\n",
 		nb_read, data->true_name, data->printable_ip,
 		data->current_seq, data->current_ttl, (double)computed_time / 1000.0);
