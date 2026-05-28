@@ -62,7 +62,7 @@ typedef struct s_data
 	struct sockaddr	target_intel;
 	struct icmphdr	*header;
 	struct timeval	launch_time;
-	struct timeval	last_reply;
+	struct timeval	last_act;
 	char			true_name[NI_MAXHOST];
 	char			printable_ip[INET_ADDRSTRLEN];
 	uint8_t			current_ihl;

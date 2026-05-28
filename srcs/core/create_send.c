@@ -57,4 +57,5 @@ void	send_ping(t_data *data)
 	forge_content(data, packet, sizeof(packet));
 	sendto(data->raw_sock, packet, sizeof(packet), 0,
 		&data->target_intel, sizeof(struct sockaddr));
+	gettimeofday(&data->last_act, 0);
 }

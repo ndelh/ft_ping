@@ -86,6 +86,6 @@ void	receive_pong(t_data *data)
 		free_data(data);
 		exit(1);
 	}
-	gettimeofday(&data->last_reply, 0);
+	gettimeofday(&data->last_act, 0);
 	treat_msg(data, &msg, nb_read);
 }

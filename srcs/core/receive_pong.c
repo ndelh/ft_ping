@@ -19,8 +19,8 @@ uint64_t	treat_time(t_data *data, char *msg)
 
 	ts = (struct timeval *)msg;
 	to_ret = 0;
-	to_ret = (data->last_reply.tv_sec - ts->tv_sec) * 1000000
-		+ (data->last_reply.tv_usec - ts->tv_usec);
+	to_ret = (data->last_act.tv_sec - ts->tv_sec) * 1000000
+		+ (data->last_act.tv_usec - ts->tv_usec);
 	if (data->min_time > to_ret)
 		data->min_time = to_ret;
 	if (data->max_time < to_ret)
@@ -67,7 +67,7 @@ void	receive_pong(t_data *data)
 		free_data(data);
 		exit(1);
 	}
-	gettimeofday(&data->last_reply, 0);
+	gettimeofday(&data->last_act, 0);
 	if (parse_received(data, receive, nb_read))
 		return ;
 	treat_msg(data, receive, nb_read);

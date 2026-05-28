@@ -43,6 +43,11 @@ void	print_rtt(t_data *data)
 	uint64_t	avg;
 	double		mdev;
 
+	if (data->received == 0)
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	avg = compute_avg(data);
 	mdev = compute_mdev(data);
 	printf("rtt min/avg/max/mdev = %lu.%lu/",

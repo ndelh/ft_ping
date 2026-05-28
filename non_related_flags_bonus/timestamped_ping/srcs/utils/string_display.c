@@ -28,7 +28,7 @@ void	print_end_intels(t_data *data)
 	int		lost;
 	uint64_t	ms_duration;
 
-	ms_duration = (data->last_reply.tv_sec - data->launch_time.tv_sec) * 1000 + (data->last_reply.tv_usec - data->launch_time.tv_usec) / 1000;
+	ms_duration = (data->last_act.tv_sec - data->launch_time.tv_sec) * 1000 + (data->last_act.tv_usec - data->launch_time.tv_usec) / 1000;
 	printf("\n--- %s ping statistics ---\n", data->hostname);
 	if (data->nb_send)
 	{
